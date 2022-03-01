@@ -2,8 +2,9 @@ const API_URL = 'https://db.ygoprodeck.com/api/v7/cardinfo.php?num=10&offset=0&s
 const IMG_URL = 'https://storage.googleapis.com/ygoprodeck.com/pics/'
 const SEARCH_API = 'https://db.ygoprodeck.com/api/v7/cardinfo.php?&fname='
 const container = document.querySelector('#container')
+const Card_data_container = document.querySelector('.Card-data-container')
 // const animated_bgs = document.querySelectorAll('.animated-bg')
-
+console.log(Card_data_container);
 
 getCards(API_URL)
 async function getCards(url){
@@ -20,7 +21,7 @@ function showCard (Cards){
     container.innerHTML = ''
 
     Cards.forEach((CardData,idx) => {
-        const{id,name,level,type,race,atk,def,attribute,desc} = CardData
+        const{id,name,level,type,race,atk,def,attribute,archetype,desc} = CardData
 
         // console.log(id);
         const ShowImgCard = `${IMG_URL}${id}.jpg`
@@ -28,25 +29,50 @@ function showCard (Cards){
         const card =  document.createElement('div')
         card.classList.add('card')
         card.innerHTML=`
-            <div class="img-container">
+            <div class="img-container" onclick="toggle()">
                 <img src="${ShowImgCard}" alt="">
             </div>
         `
         // console.log(ShowImgCard,id);
         container.appendChild(card)
-        card.addEventListener('click',()=>console.log(id,name,level,type,race,atk,def,attribute,desc))
 
+        card.addEventListener('click',()=>{
+            // console.log(id,name,level,type,race,atk,def,attribute,archetype,desc)
+            Card_data_container.innerHTML = ''
+            const ShowData=  document.createElement('div')
+            ShowData.classList.add('card_data')
+            ShowData.classList.add('active')
+            ShowData.innerHTML=`
+            <i class="fa-solid fa-xmark" onclick="toggle()"></i>
+            <div class="img">
+            <img src="https://storage.googleapis.com/ygoprodeck.com/pics/${id}.jpg" alt="">
+        </div>
+        <div class="content">
+            <h1>${name}</h1><div class="icon"><img src="https://ygoprodeck.com/pics/icons/race/${race}.png" alt=""><img src="https://ygoprodeck.com/pics/${attribute}.jpg" alt=""></div><hr>
+            <strong>'${race}' '${type}'</strong>
+            <p>${desc}
+            <br></p><strong>Archetype:${archetype}</strong><br>
+            <strong>ATK:${atk} DEF:${def}</strong>
+        </div>
+        `
+        Card_data_container.appendChild(ShowData)
+        })
 })
 }
+
 form.addEventListener('submit',(e)=>{
     e.preventDefault()
 
     const searchTerm = search.value
     if(searchTerm && searchTerm !== ''){
         getCards(SEARCH_API + searchTerm)
-
+        container.innerHTML = ''
         search.value = ''
     }else{
         window.location.reload()
     }
 })
+function toggle(){
+    container.classList.toggle('active')
+    Card_data_container.innerHTML = ''
+}
