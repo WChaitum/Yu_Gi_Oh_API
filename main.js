@@ -1,10 +1,14 @@
+
+
 const API_URL = 'https://db.ygoprodeck.com/api/v7/cardinfo.php?num=10&offset=0&sort=new'
 const IMG_URL = 'https://storage.googleapis.com/ygoprodeck.com/pics/'
 const SEARCH_API = 'https://db.ygoprodeck.com/api/v7/cardinfo.php?&fname='
 const container = document.querySelector('#container')
 const Card_data_container = document.querySelector('.Card-data-container')
+
+
 // const animated_bgs = document.querySelectorAll('.animated-bg')
-console.log(Card_data_container);
+// console.log(Card_data_container);
 
 getCards(API_URL)
 async function getCards(url){
@@ -36,10 +40,11 @@ function showCard (Cards){
         // console.log(ShowImgCard,id);
         container.appendChild(card)
 
+
         card.addEventListener('click',()=>{
             // console.log(id,name,level,type,race,atk,def,attribute,archetype,desc)
             Card_data_container.innerHTML = ''
-            const ShowData=  document.createElement('div')
+            const ShowData =  document.createElement('div')
             ShowData.classList.add('card_data')
             ShowData.classList.add('active')
             ShowData.innerHTML=`
@@ -55,11 +60,15 @@ function showCard (Cards){
             <strong>ATK:${atk} DEF:${def}</strong>
         </div>
         `
+        const margin_top = window.pageYOffset
+        // console.log(margin_top)
+
+        Card_data_container.style.marginTop = `${margin_top}px`;
         Card_data_container.appendChild(ShowData)
         })
+
 })
 }
-
 form.addEventListener('submit',(e)=>{
     e.preventDefault()
 
@@ -68,6 +77,9 @@ form.addEventListener('submit',(e)=>{
         getCards(SEARCH_API + searchTerm)
         container.innerHTML = ''
         search.value = ''
+        Card_data_container.innerHTML=''
+        container.classList.remove('active')
+        
     }else{
         window.location.reload()
     }
@@ -76,3 +88,4 @@ function toggle(){
     container.classList.toggle('active')
     Card_data_container.innerHTML = ''
 }
+
