@@ -86,7 +86,7 @@ header .img img{
 /********************Pop Up***********************/
 .Card-data-container{
     position: absolute;
-    top: 55%;
+    top: 55vh;
     left: 50%;
     transform: translate(-50%,-50%);
 }
